@@ -1,0 +1,17 @@
+BankOfAPI
+
+	Backend(SpringBoot Microservice, SpringBoot Data JPA with H2)
+
+		1. UserService - registration, login
+
+		2. AccountService - register for accounts, provide some services
+
+		3. DashboardService - view card related transaction
+
+	FrontEnd(React)
+
+		1. user module - home page with static information with sign in / sign up
+
+		2. dashboard module - dashboard page with accounts, card, transaction related information, create account link, Transfer money
+
+		3. account module - create account page , 
