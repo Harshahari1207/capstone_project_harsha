@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import NavBar from "./NavBar";
-
+import axios from "axios";
 const Register = () => {
   const [formData, setFormData] = useState({
     username: "",
@@ -16,9 +16,22 @@ const Register = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     console.log("Form Data Submitted:", formData);
+    formData.id = Math.floor(Math.random() * 1000);
+    const data = {
+        userId: Math.floor(Math.random() * 1000),
+        username: formData.username,
+        password: formData.password,
+        address: formData.address
+    }
+    const response = await axios.post(
+      "http://localhost:8081/user/register",
+      data
+    )
+    console.log(response)
+
   };
 
   return (
