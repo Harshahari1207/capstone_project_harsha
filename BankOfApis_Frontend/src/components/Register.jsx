@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import NavBar from "./NavBar";
 import axios from "axios";
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 const Register = () => {
-  const history = useHistory();
+  const history = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -32,10 +32,10 @@ const Register = () => {
       "http://localhost:8081/user/register",
       data
     )
-    if(response.data.success){
-      history.push("/login")
+    if(response.status === 201){
+      console.log(response)
+      history("/login")
     }
-    console.log(response)
 
   };
 

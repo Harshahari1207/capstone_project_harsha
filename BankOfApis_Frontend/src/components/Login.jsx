@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import NavBar from "./NavBar";
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 const Login = () => {
+  const history = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -22,10 +24,12 @@ const Login = () => {
       "http://localhost:8081/user/login",
       formData
     )
+    if(response.status = 200){
+      history("/")
+    }
     localStorage.setItem("username", formData.username)
     localStorage.setItem("token", response.data.token)
     console.log(response)
-
   };
 
   return (
