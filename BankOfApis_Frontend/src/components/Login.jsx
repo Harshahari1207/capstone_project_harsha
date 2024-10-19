@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import NavBar from "./NavBar";
-
+import axios from "axios";
 const Login = () => {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
-    confirmPassword: "",
-    address: "",
   });
 
   const handleChange = (e) => {
@@ -16,10 +14,18 @@ const Login = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     console.log("Form Data Submitted:", formData);
-    
+
+    const response = await axios.post(
+      "http://localhost:8081/user/login",
+      formData
+    )
+    localStorage.setItem("username", formData.username)
+    localStorage.setItem("token", response.data.token)
+    console.log(response)
+
   };
 
   return (

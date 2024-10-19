@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import NavBar from "./NavBar";
 import axios from "axios";
+import { useHistory } from 'react-router-dom';
 const Register = () => {
+  const history = useHistory();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -30,6 +32,9 @@ const Register = () => {
       "http://localhost:8081/user/register",
       data
     )
+    if(response.data.success){
+      history.push("/login")
+    }
     console.log(response)
 
   };
@@ -57,7 +62,7 @@ const Register = () => {
               <div className="card-body">
                 <h3 className="card-title text-center mb-4">Register</h3>
                 <form onSubmit={handleSubmit}>
-                  {/* Username Field */}
+                  {/* Username */}
                   <div className="mb-3">
                     <label htmlFor="username" className="form-label">
                       Username
@@ -73,7 +78,7 @@ const Register = () => {
                     />
                   </div>
 
-                  {/* Password Field */}
+                  {/* Password*/}
                   <div className="mb-3">
                     <label htmlFor="password" className="form-label">
                       Password
@@ -89,7 +94,7 @@ const Register = () => {
                     />
                   </div>
 
-                  {/* Confirm Password Field */}
+                  {/* Confirm Password */}
                   <div className="mb-3">
                     <label htmlFor="confirmPassword" className="form-label">
                       Confirm Password
@@ -105,7 +110,7 @@ const Register = () => {
                     />
                   </div>
 
-                  {/* Address Field */}
+                  {/* Address */}
                   <div className="mb-3">
                     <label htmlFor="address" className="form-label">
                       Address
