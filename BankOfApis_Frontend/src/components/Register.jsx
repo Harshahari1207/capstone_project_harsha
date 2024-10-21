@@ -10,6 +10,7 @@ const Register = () => {
     confirmPassword: "",
     address: "",
   });
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (e) => {
     setFormData({
@@ -18,9 +19,23 @@ const Register = () => {
     });
   };
 
+  const containsSpecialCharacter = (password) => {
+    const specialChars = ['!', '@', '#', '$', '%', '^', '&', '*'];
+    return specialChars.some(char => password.includes(char));
+  };
   const handleSubmit = async(e) => {
     e.preventDefault();
     console.log("Form Data Submitted:", formData);
+    if (formData.password !== formData.confirmPassword || formData.password.length < 6) {
+      setErrorMessage('Password must be at least 6 characters long/Passwords do not match. Please try again.');
+      return;
+    }
+    if (!containsSpecialCharacter(password)) {
+      setErrorMessage('Password must contain at least one special character.');
+      return;
+    }
+
+    setErrorMessage('');
     formData.id = Math.floor(Math.random() * 1000);
     const data = {
         userId: Math.floor(Math.random() * 1000),
@@ -125,6 +140,8 @@ const Register = () => {
                     ></textarea>
                   </div>
                   <p>Have registered <a href="/login">Login</a></p>
+                  {/* Error Message */}
+                  <p className="text-danger">{errorMessage}</p>
                   {/* Submit Button */}
                   <button type="submit" className="btn btn-primary w-100">
                     Submit

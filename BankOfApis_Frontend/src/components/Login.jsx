@@ -26,6 +26,8 @@ const Login = () => {
     )
     if(response.status = 200){
       history("/")
+    }else{
+      alert("Invalid credentials")
     }
     localStorage.setItem("username", formData.username)
     localStorage.setItem("token", response.data.token)
