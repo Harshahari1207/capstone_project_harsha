@@ -20,6 +20,7 @@ import com.wipro.capstone.UserService.service.UserService;
 
 @RestController
 @RequestMapping("/user")
+@CrossOrigin(origins = "http://localhost:5173")
 public class UserController {
 
 	@Autowired
@@ -31,16 +32,15 @@ public class UserController {
 		return ResponseEntity.ok(users);
 	}
 
-	@CrossOrigin(origins = "http://localhost:5173")
 	@PostMapping("/register")
 	public ResponseEntity<User> register(@RequestBody User user) {
 		return new ResponseEntity<>(userService.registerUser(user), HttpStatus.CREATED);
 	}
 
-	@CrossOrigin(origins = "http://localhost:5173")
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody User user) {
 		User foundUser = userService.findUserByUsername(user.getUsername());
+		System.out.println(foundUser);
 		if (foundUser != null) {
 			String token = "abc"; // Placeholder for JWT or session token generation
 			return ResponseEntity.ok(Collections.singletonMap("token", token));
@@ -49,14 +49,12 @@ public class UserController {
 		}
 	}
 
-	@CrossOrigin(origins = "http://localhost:5173")
 	@GetMapping("/{id}")
 	public ResponseEntity<User> getUserById(@PathVariable Long id) {
 		User user = userService.getUserById(id);
 		return user != null ? ResponseEntity.ok(user) : ResponseEntity.notFound().build();
 	}
 
-	@CrossOrigin(origins = "http://localhost:5173")
 	@PutMapping("/{id}")
 	public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userDetails) {
 		return ResponseEntity.ok(userService.updateUser(id, userDetails));
