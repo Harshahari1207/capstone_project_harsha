@@ -17,6 +17,20 @@ public class Account {
 	private Long userId;
 	private String secretPassword;
 
+	public Account(Long accountId, String accountName, String accountType, Integer balance, Long userId,
+			String secretPassword) {
+		this.accountId = accountId;
+		this.accountName = accountName;
+		this.accountType = accountType;
+		this.balance = balance;
+		this.userId = userId;
+		this.secretPassword = secretPassword;
+	}
+
+	public Account() {
+
+	}
+
 	public Long getAccountId() {
 		return accountId;
 	}

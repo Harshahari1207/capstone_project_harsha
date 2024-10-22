@@ -1,7 +1,7 @@
 package com.wipro.capstone.UserService.controller;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,7 +43,9 @@ public class UserController {
 		System.out.println(foundUser);
 		if (foundUser != null) {
 			String token = "abc"; // Placeholder for JWT or session token generation
-			return ResponseEntity.ok(Collections.singletonMap("token", token));
+			Map<String, Object> response = Map.of("token", token, "user", foundUser);
+			return ResponseEntity.ok(response);
+
 		} else {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}

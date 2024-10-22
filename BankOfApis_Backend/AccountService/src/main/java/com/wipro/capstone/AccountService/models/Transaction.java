@@ -20,6 +20,21 @@ public class Transaction {
 	private Long userId;
 	private LocalDate dateTransaction;
 
+	public Transaction(Long transactionId, Long frmAccountId, String transactionType, Long toAccountId, Integer amount,
+			Long userId, LocalDate dateTransaction) {
+		this.transactionId = transactionId;
+		this.frmAccountId = frmAccountId;
+		this.transactionType = transactionType;
+		this.toAccountId = toAccountId;
+		this.amount = amount;
+		this.userId = userId;
+		this.dateTransaction = dateTransaction;
+	}
+
+	public Transaction() {
+
+	}
+
 	public Long getTransactionId() {
 		return transactionId;
 	}
