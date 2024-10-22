@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import NavBar from "./NavBar";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 const Register = () => {
@@ -30,7 +29,7 @@ const Register = () => {
       setErrorMessage('Password must be at least 6 characters long/Passwords do not match. Please try again.');
       return;
     }
-    if (!containsSpecialCharacter(password)) {
+    if (!containsSpecialCharacter(formData.password)) {
       setErrorMessage('Password must contain at least one special character.');
       return;
     }
@@ -56,7 +55,6 @@ const Register = () => {
 
   return (
     <div className="home">
-      <NavBar />
       <div className="container my-5">
         <div className="row justify-content-center ">
           <div className="col-md-6 text-center d-flex align-items-center">

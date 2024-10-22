@@ -36,7 +36,7 @@ const Login = () => {
 
   return (
     <div className="home">
-      <NavBar />
+      
       <div className="container my-5">
         <div className="row justify-content-center ">
           <div className="col-md-6 text-center d-flex align-items-center pb-5">

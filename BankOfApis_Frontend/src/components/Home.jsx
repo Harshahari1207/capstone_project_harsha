@@ -1,9 +1,8 @@
-import NavBar from "./NavBar";
 
 const Home = () => {
   return (
     <div className="home">
-      <NavBar />
+      
       <div className="hero container d-flex flex-column justify-content-center align-items-center">
         <div className="w-100 mt-4">
           <h1 className="text-center">

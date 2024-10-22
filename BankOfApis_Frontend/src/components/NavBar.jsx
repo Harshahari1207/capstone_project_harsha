@@ -22,8 +22,18 @@ const NavBar = () => {
         {localStorage.getItem("token") ? (
           <ul className="navbar-nav ms-auto">
             <li className="nav-item">
-              <a className="nav-link" href="/login">
+              <a className="nav-link" href="/">
                 Welcome {localStorage.getItem("username")}
+              </a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="/">
+                Logout
+              </a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="/dashboard">
+                Dashboard
               </a>
             </li>
           </ul>
