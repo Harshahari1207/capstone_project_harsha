@@ -1,18 +1,20 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-const NavBar = () => {
+import { useNavigate, Link } from "react-router-dom";
 
+const NavBar = () => {
   const history = useNavigate();
-  const handleLogout = () => {
+
+  const handleLogout = (e) => {
+    e.preventDefault(); // Prevents the default anchor behavior
     localStorage.clear();
-    history("/");
-  }
+    history("/"); // Navigate to home page
+  };
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light w-100 d-flex justify-content-between align-items-center p-3">
-      <a className="navbar-brand" href="/">
-        {" "}
+      <Link className="navbar-brand" to="/">
         BankAPI's
-      </a>
+      </Link>
       <button
         className="navbar-toggler"
         type="button"
@@ -28,32 +30,32 @@ const NavBar = () => {
         {localStorage.getItem("username") ? (
           <ul className="navbar-nav ms-auto">
             <li className="nav-item">
-              <a className="nav-link" href="/">
+              <span className="nav-link">
                 Welcome {localStorage.getItem("username")}
-              </a>
+              </span>
             </li>
             <li className="nav-item">
-              <a className="nav-link"onClick={handleLogout}>
+              <a className="nav-link" href="/" onClick={handleLogout}>
                 Logout
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/dashboard">
+              <Link className="nav-link" to="/dashboard">
                 Dashboard
-              </a>
+              </Link>
             </li>
           </ul>
         ) : (
           <ul className="navbar-nav ms-auto">
             <li className="nav-item">
-              <a className="nav-link" href="/login">
+              <Link className="nav-link" to="/login">
                 Login
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/register">
+              <Link className="nav-link" to="/register">
                 Register
-              </a>
+              </Link>
             </li>
           </ul>
         )}

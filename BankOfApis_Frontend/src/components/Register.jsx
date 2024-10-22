@@ -55,7 +55,7 @@ const Register = () => {
 
   return (
     <div className="home">
-      <div className="container my-5">
+      <div className="container pt-5">
         <div className="row justify-content-center ">
           <div className="col-md-6 text-center d-flex align-items-center">
             <div className="">
@@ -142,7 +142,7 @@ const Register = () => {
                   <p className="text-danger">{errorMessage}</p>
                   {/* Submit Button */}
                   <button type="submit" className="btn btn-primary w-100">
-                    Submit
+                    Register
                   </button>
                 </form>
               </div>
