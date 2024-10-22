@@ -29,8 +29,9 @@ const Login = () => {
     }else{
       alert("Invalid credentials")
     }
-    localStorage.setItem("username", formData.username)
+    localStorage.setItem("username", response.data.user.username)
     localStorage.setItem("token", response.data.token)
+    localStorage.setItem("userId", response.data.user.userId)
     console.log(response)
   };
 
