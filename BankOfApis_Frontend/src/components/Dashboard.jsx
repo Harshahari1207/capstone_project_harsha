@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import AccountTransactionForm from "./AccountTransactionForm";
 
 const Dashboard = () => {
   const [accounts, setAccounts] = useState([]);
@@ -21,8 +22,7 @@ const Dashboard = () => {
   const getAccounts = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8082/accounts/user/" +
-          localStorage.getItem("userId")
+        "http://localhost:8082/accounts/user/" + localStorage.getItem("userId")
       );
       console.log(response.data);
       setAccounts(response.data);
@@ -41,7 +41,7 @@ const Dashboard = () => {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
   // Onload get all Accounts
   useEffect(() => {
     getAccounts();
@@ -83,35 +83,37 @@ const Dashboard = () => {
   const handleTransactionChange = (e) => {
     setTransaction({ ...transaction, [e.target.name]: e.target.value });
   };
-
-  const handleAddTransaction = async(e) => {
+  const handleAddAccountChange = (e) => {
+    setAccountForm({ ...accountForm, [e.target.name]: e.target.value });
+  };
+  const handleAddTransaction = async (e) => {
     e.preventDefault();
     console.log("Transaction added:", transaction);
     // if(transaction.amount > accounts[transaction.frmAccountId - 1].balance){
     //   alert("Insufficient Balance");
-    //   return; 
+    //   return;
     // }
-    if(transaction.frmAccountId === transaction.toAccountId){
+    if (transaction.frmAccountId === transaction.toAccountId) {
       alert("Cannot transfer to same account");
-      return; 
+      return;
     }
-   try {
-    const data = {
-      frmAccountId: transaction.frmAccountId,
-      toAccountId: transaction.toAccountId,
-      amount: transaction.amount,
-      transactionType: transaction.transactionType,
-      userId: localStorage.getItem("userId"),
+    try {
+      const data = {
+        frmAccountId: transaction.frmAccountId,
+        toAccountId: transaction.toAccountId,
+        amount: transaction.amount,
+        transactionType: transaction.transactionType,
+        userId: localStorage.getItem("userId"),
+      };
+      const response = await axios.post(
+        "http://localhost:8082/transactions/transfer",
+        data
+      );
+      console.log(response);
+      getAccounts();
+    } catch (error) {
+      console.log(error);
     }
-    const response = await axios.post(
-      "http://localhost:8082/transactions/transfer",
-      data
-    );
-    console.log(response);
-    getAccounts()
-   } catch (error) {
-    console.log(error);
-   }
     setTransaction({
       frmAccountId: "",
       toAccountId: "",
@@ -121,26 +123,22 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="home">
-      <div className="container">
-        <div className="row p-3 justify-content-around">
+    <div className="home pt-5">
+      <div className="container rounded">
+        {/* <div className="row p-3 justify-content-around">
           <div className="card col-md-5">
-            {/* Add Bank Account Form */}
+            
             <h4>Add Bank Account</h4>
             <form onSubmit={handleAddAccount} className="mb-4">
               <div className="form-group mb-3">
                 <label>Account Name</label>
                 <input
                   type="text"
+                  name="accountName"
                   className="form-control"
                   placeholder="Enter account name"
                   value={accountForm.accountName}
-                  onChange={(e) =>
-                    setAccountForm({
-                      ...accountForm,
-                      accountName: e.target.value,
-                    })
-                  }
+                  onChange={handleAddAccountChange}
                   required
                 />
               </div>
@@ -149,13 +147,9 @@ const Dashboard = () => {
                 <label>Account Type</label>
                 <select
                   className="form-control"
+                  name="accountType"
                   value={accountForm.accountType}
-                  onChange={(e) =>
-                    setAccountForm({
-                      ...accountForm,
-                      accountType: e.target.value,
-                    })
-                  }
+                  onChange={handleAddAccountChange}
                   required
                 >
                   <option value="">Select account type</option>
@@ -170,15 +164,11 @@ const Dashboard = () => {
                 <label>Balance</label>
                 <input
                   type="number"
+                  name="balance"
                   className="form-control"
                   placeholder="Enter balance"
                   value={accountForm.balance}
-                  onChange={(e) =>
-                    setAccountForm({
-                      ...accountForm,
-                      balance: e.target.value,
-                    })
-                  }
+                  onChange={handleAddAccountChange}
                   required
                 />
               </div>
@@ -187,15 +177,11 @@ const Dashboard = () => {
                 <label>Secret Password</label>
                 <input
                   type="password"
+                  name="secretePassword"
                   className="form-control"
                   placeholder="Enter secret password"
                   value={accountForm.secretePassword}
-                  onChange={(e) =>
-                    setAccountForm({
-                      ...accountForm,
-                      secretePassword: e.target.value,
-                    })
-                  }
+                  onChange={handleAddAccountChange}
                   required
                 />
               </div>
@@ -207,7 +193,6 @@ const Dashboard = () => {
           </div>
 
           <div className="card col-md-5">
-            {/* Add Transaction Form */}
             <h4>Place Transaction</h4>
             <form onSubmit={handleAddTransaction} className="mb-4">
               <div className="form-group mb-3">
@@ -280,8 +265,16 @@ const Dashboard = () => {
               </button>
             </form>
           </div>
-        </div>
-
+        </div> */}
+        <AccountTransactionForm
+          accounts={accounts}
+          handleAddAccount={handleAddAccount}
+          accountForm={accountForm}
+          handleAddTransaction={handleAddTransaction}
+          transaction={transaction}
+          handleTransactionChange={handleTransactionChange}
+          handleAddAccountChange={handleAddAccountChange}
+        />
         <div className="row mt-4">
           {/* Display Bank Cards */}
           <h4>Bank Accounts</h4>
@@ -311,15 +304,25 @@ const Dashboard = () => {
               <div key={index} className="col-md-4 mb-3">
                 <div className="card">
                   <div className="card-body">
-                    <h5 className="card-title">Transaction ID: {transaction.transactionId}</h5>
-                    <p className="card-text">From Account: {transaction.frmAccountId}</p>
-                    <p className="card-text">To Account: {transaction.toAccountId}</p>
-                    <p className="card-text">Transaction Type: {transaction.transactionType}</p>
+                    <h5 className="card-title">
+                      Transaction ID: {transaction.transactionId}
+                    </h5>
+                    <p className="card-text">
+                      From Account: {transaction.frmAccountId}
+                    </p>
+                    <p className="card-text">
+                      To Account: {transaction.toAccountId}
+                    </p>
+                    <p className="card-text">
+                      Transaction Type: {transaction.transactionType}
+                    </p>
                     <p className="card-text">Amount: ${transaction.amount}</p>
-                    <p className="card-text">Date: {transaction.dateTransaction}</p>
+                    <p className="card-text">
+                      Date: {transaction.dateTransaction}
+                    </p>
                   </div>
                 </div>
-              </div>         
+              </div>
             ))
           )}
         </div>
