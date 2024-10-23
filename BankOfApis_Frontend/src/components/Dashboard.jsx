@@ -3,6 +3,7 @@ import axios from "axios";
 
 const Dashboard = () => {
   const [accounts, setAccounts] = useState([]);
+  const [transactions, setTransactions] = useState([]);
   const [transaction, setTransaction] = useState({
     frmAccountId: "",
     toAccountId: "",
@@ -13,26 +14,38 @@ const Dashboard = () => {
   const [accountForm, setAccountForm] = useState({
     accountName: "",
     accountType: "",
-    accountNumber: "",
     balance: "",
     secretePassword: "",
   });
 
+  const getAccounts = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:8082/accounts/user/" +
+          localStorage.getItem("userId")
+      );
+      console.log(response.data);
+      setAccounts(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const getTransactions = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:8082/transactions/user/" +
+          localStorage.getItem("userId")
+      );
+      console.log(response);
+      setTransactions(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
   // Onload get all Accounts
   useEffect(() => {
-    const getAccounts = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:8082/accounts/user/" +
-            localStorage.getItem("userId")
-        );
-        console.log(response.data);
-        setAccounts(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
     getAccounts();
+    getTransactions();
   }, []);
 
   // Handler for adding a bank account
@@ -42,7 +55,6 @@ const Dashboard = () => {
     try {
       console.log(accountForm);
       const data = {
-        accountId: accountForm.accountNumber,
         accountName: accountForm.accountName,
         accountType: accountForm.accountType,
         balance: accountForm.balance,
@@ -62,7 +74,6 @@ const Dashboard = () => {
     setAccountForm({
       accountName: "",
       accountType: "",
-      accountNumber: "",
       balance: "",
       secretePassword: "",
     });
@@ -73,9 +84,34 @@ const Dashboard = () => {
     setTransaction({ ...transaction, [e.target.name]: e.target.value });
   };
 
-  const handleAddTransaction = (e) => {
+  const handleAddTransaction = async(e) => {
     e.preventDefault();
     console.log("Transaction added:", transaction);
+    // if(transaction.amount > accounts[transaction.frmAccountId - 1].balance){
+    //   alert("Insufficient Balance");
+    //   return; 
+    // }
+    if(transaction.frmAccountId === transaction.toAccountId){
+      alert("Cannot transfer to same account");
+      return; 
+    }
+   try {
+    const data = {
+      frmAccountId: transaction.frmAccountId,
+      toAccountId: transaction.toAccountId,
+      amount: transaction.amount,
+      transactionType: transaction.transactionType,
+      userId: localStorage.getItem("userId"),
+    }
+    const response = await axios.post(
+      "http://localhost:8082/transactions/transfer",
+      data
+    );
+    console.log(response);
+    getAccounts()
+   } catch (error) {
+    console.log(error);
+   }
     setTransaction({
       frmAccountId: "",
       toAccountId: "",
@@ -111,10 +147,8 @@ const Dashboard = () => {
 
               <div className="form-group mb-3">
                 <label>Account Type</label>
-                <input
-                  type="text"
+                <select
                   className="form-control"
-                  placeholder="Enter account type"
                   value={accountForm.accountType}
                   onChange={(e) =>
                     setAccountForm({
@@ -123,24 +157,13 @@ const Dashboard = () => {
                     })
                   }
                   required
-                />
-              </div>
-
-              <div className="form-group mb-3">
-                <label>Account Number</label>
-                <input
-                  type="number"
-                  className="form-control"
-                  placeholder="Enter account number"
-                  value={accountForm.accountNumber}
-                  onChange={(e) =>
-                    setAccountForm({
-                      ...accountForm,
-                      accountNumber: e.target.value,
-                    })
-                  }
-                  required
-                />
+                >
+                  <option value="">Select account type</option>
+                  <option value="savings">Savings</option>
+                  <option value="current">Current</option>
+                  <option value="business">Business</option>
+                  <option value="investment">Investment</option>
+                </select>
               </div>
 
               <div className="form-group mb-3">
@@ -189,28 +212,38 @@ const Dashboard = () => {
             <form onSubmit={handleAddTransaction} className="mb-4">
               <div className="form-group mb-3">
                 <label>From Account ID</label>
-                <input
-                  type="number"
+                <select
                   className="form-control"
-                  placeholder="Enter from account ID"
                   name="frmAccountId"
                   value={transaction.frmAccountId}
                   onChange={handleTransactionChange}
                   required
-                />
+                >
+                  <option value="">Select from account</option>
+                  {accounts.map((account) => (
+                    <option key={account.accountId} value={account.accountId}>
+                      {account.accountId} - {account.accountType}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div className="form-group mb-3">
                 <label>To Account ID</label>
-                <input
-                  type="number"
+                <select
                   className="form-control"
-                  placeholder="Enter to account ID"
                   name="toAccountId"
                   value={transaction.toAccountId}
                   onChange={handleTransactionChange}
                   required
-                />
+                >
+                  <option value="">Select to account</option>
+                  {accounts.map((account) => (
+                    <option key={account.accountId} value={account.accountId}>
+                      {account.accountId} - {account.accountType}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div className="form-group mb-3">
@@ -265,6 +298,28 @@ const Dashboard = () => {
                   </div>
                 </div>
               </div>
+            ))
+          )}
+        </div>
+        <div className="row mt-4">
+          {/* Display Transaction Cards */}
+          <h4>Transactions</h4>
+          {transactions.length === 0 ? (
+            <p>No Transaction available. Make Transaction to display here.</p>
+          ) : (
+            transactions.map((transaction, index) => (
+              <div key={index} className="col-md-4 mb-3">
+                <div className="card">
+                  <div className="card-body">
+                    <h5 className="card-title">Transaction ID: {transaction.transactionId}</h5>
+                    <p className="card-text">From Account: {transaction.frmAccountId}</p>
+                    <p className="card-text">To Account: {transaction.toAccountId}</p>
+                    <p className="card-text">Transaction Type: {transaction.transactionType}</p>
+                    <p className="card-text">Amount: ${transaction.amount}</p>
+                    <p className="card-text">Date: {transaction.dateTransaction}</p>
+                  </div>
+                </div>
+              </div>         
             ))
           )}
         </div>
