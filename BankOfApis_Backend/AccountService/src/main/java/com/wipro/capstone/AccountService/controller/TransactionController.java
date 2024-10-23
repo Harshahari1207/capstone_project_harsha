@@ -30,9 +30,12 @@ public class TransactionController {
 		return ResponseEntity.ok(result);
 	}
 
-	@GetMapping("/account/{accountId}")
-	public ResponseEntity<List<Transaction>> getTransactions(@PathVariable Long accountId) {
-		List<Transaction> transactions = transactionService.getTransactionsByAccount(accountId);
+	@GetMapping("/user/{userId}")
+	public ResponseEntity<List<Transaction>> getTransactionsByUserId(@PathVariable Long userId) {
+		List<Transaction> transactions = transactionService.getTransactionsByUserId(userId);
+		if (transactions.isEmpty()) {
+			return ResponseEntity.noContent().build();
+		}
 		return ResponseEntity.ok(transactions);
 	}
 }

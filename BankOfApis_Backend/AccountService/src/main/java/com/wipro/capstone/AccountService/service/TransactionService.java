@@ -55,7 +55,7 @@ public class TransactionService {
 		return "Transaction successful";
 	}
 
-	public List<Transaction> getTransactionsByAccount(Long accountId) {
-		return transactionRepository.findByFrmAccountIdOrToAccountId(accountId, accountId);
+	public List<Transaction> getTransactionsByUserId(Long userId) {
+		return transactionRepository.findByUserId(userId);
 	}
 }

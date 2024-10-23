@@ -9,5 +9,5 @@ import com.wipro.capstone.AccountService.models.Transaction;
 
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Integer> {
-	List<Transaction> findByFrmAccountIdOrToAccountId(Long frmAccountId, Long toAccountId);
+	List<Transaction> findByUserId(Long userId);
 }
