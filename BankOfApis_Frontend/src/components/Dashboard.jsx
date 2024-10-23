@@ -105,11 +105,13 @@ const Dashboard = () => {
         transactionType: transaction.transactionType,
         userId: localStorage.getItem("userId"),
       };
+      console.log("data", data)
       const response = await axios.post(
         "http://localhost:8082/transactions/transfer",
         data
       );
       console.log(response);
+      getTransactions();
       getAccounts();
     } catch (error) {
       console.log(error);
@@ -124,7 +126,7 @@ const Dashboard = () => {
 
   return (
     <div className="home pt-5">
-      <div className="container rounded">
+      <div className="container ">
         {/* <div className="row p-3 justify-content-around">
           <div className="card col-md-5">
             

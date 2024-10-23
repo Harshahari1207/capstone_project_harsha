@@ -9,8 +9,8 @@ const AccountTransactionForm = ({
   handleTransactionChange,
   handleAddAccountChange,
 }) => {
-  const [activeForm, setActiveForm] = useState("account"); 
-
+  const [activeForm, setActiveForm] = useState("account");
+  console.log(transaction);
   return (
     <div className="container pt-5 bg-light rounded bg-body-secondary">
       {/* Toggle buttons */}
