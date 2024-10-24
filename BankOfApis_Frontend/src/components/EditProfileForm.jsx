@@ -20,7 +20,7 @@ const EditProfileForm = ({ user, handleClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Data Submitted:", userForm); // Log the correct state
+    console.log("Form Data Submitted:", userForm);
     try {
       const response = await axios.put(
         `http://localhost:8081/user/${user.userId}`,

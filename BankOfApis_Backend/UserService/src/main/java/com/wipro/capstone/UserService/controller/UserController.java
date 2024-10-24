@@ -40,8 +40,8 @@ public class UserController {
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody User user) {
 		User foundUser = userService.findUserByUsername(user.getUsername());
-		System.out.println(foundUser);
-		if (foundUser != null) {
+		System.out.println(foundUser.getPassword().equals(user.getPassword()));
+		if (foundUser != null && foundUser.getPassword().equals(user.getPassword())) {
 			String token = "abc"; // Placeholder for JWT or session token generation
 			Map<String, Object> response = Map.of("token", token, "user", foundUser);
 			return ResponseEntity.ok(response);
