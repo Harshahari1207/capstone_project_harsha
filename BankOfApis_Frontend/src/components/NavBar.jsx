@@ -30,9 +30,9 @@ const NavBar = () => {
         {localStorage.getItem("username") ? (
           <ul className="navbar-nav ms-auto">
             <li className="nav-item">
-              <span className="nav-link">
+              <Link className="nav-link" to="/profile">
                 Welcome {localStorage.getItem("username")}
-              </span>
+              </Link>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="/" onClick={handleLogout}>
