@@ -2,31 +2,34 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
-const EditProfileForm = ({user, handleClose }) => {
+
+const EditProfileForm = ({ user, handleClose }) => {
   const [userForm, setUserForm] = useState({
     username: user.username,
-    description: user.description,
     password: user.password,
     address: user.address,
   });
-  console.log(user)
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserForm({
       ...userForm,
-      [name]: newValue,
+      [name]: value,
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Data Submitted:", user);
+    console.log("Form Data Submitted:", userForm); // Log the correct state
     try {
-      
+      const response = await axios.put(
+        `http://localhost:8081/user/${user.userId}`,
+        userForm
+      );
+      console.log(response);
       handleClose();
-    } catch(error) {
-      console.error("Error fetching products:", error);
+    } catch (error) {
+      console.error("Error updating user:", error);
     }
   };
 
@@ -37,16 +40,16 @@ const EditProfileForm = ({user, handleClose }) => {
           <FontAwesomeIcon icon={faTimes} />
         </button>
 
-        <h2>Add Product</h2>
+        <h2>Edit Profile</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="name" className="form-label">
+            <label htmlFor="username" className="form-label">
               User Name
             </label>
             <input
               type="text"
-              id="name"
-              name="name"
+              id="username"
+              name="username"
               className="form-control"
               value={userForm.username}
               onChange={handleChange}
@@ -54,20 +57,7 @@ const EditProfileForm = ({user, handleClose }) => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="description" className="form-label">
-              Description
-            </label>
-            <textarea
-              id="description"
-              name="description"
-              className="form-control"
-              value={userForm.description}
-              onChange={handleChange}
-              required
-            ></textarea>
-          </div>
-          <div className="form-group">
-            <label htmlFor="price" className="form-label">
+            <label htmlFor="password" className="form-label">
               Password
             </label>
             <input
@@ -81,11 +71,10 @@ const EditProfileForm = ({user, handleClose }) => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="availability" className="form-label">
-              Availability
+            <label htmlFor="address" className="form-label">
+              Address
             </label>
-            <input
-              type="address"
+            <textarea
               id="address"
               name="address"
               className="form-control"
@@ -95,7 +84,7 @@ const EditProfileForm = ({user, handleClose }) => {
             />
           </div>
           <button type="submit" className="btn btn-primary mt-3">
-            Add Product
+            Submit
           </button>
         </form>
       </div>

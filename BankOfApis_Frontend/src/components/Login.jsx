@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import NavBar from "./NavBar";
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 const Login = () => {
   const history = useNavigate();
+  const [errorMessage, setErrorMessage] = useState("");
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -16,28 +17,30 @@ const Login = () => {
     });
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Form Data Submitted:", formData);
-
-    const response = await axios.post(
-      "http://localhost:8081/user/login",
-      formData
-    )
-    if(response.status = 200){
-      history("/")
-    }else{
-      alert("Invalid credentials")
+    try {
+      const response = await axios.post(
+        "http://localhost:8081/user/login",
+        formData
+      );
+      if ((response.status = 200)) {
+        history("/");
+      } else {
+        alert("Invalid credentials");
+      }
+      localStorage.setItem("username", response.data.user.username);
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("userId", response.data.user.userId);
+      console.log(response);
+    } catch (error) {
+      setErrorMessage("Invalid credentials/Errror logging in" + error);
     }
-    localStorage.setItem("username", response.data.user.username)
-    localStorage.setItem("token", response.data.token)
-    localStorage.setItem("userId", response.data.user.userId)
-    console.log(response)
   };
 
   return (
     <div className="home">
-      
       <div className="container pt-5">
         <div className="row justify-content-center ">
           <div className="col-md-6 text-center d-flex align-items-center pb-5">
@@ -90,8 +93,10 @@ const Login = () => {
                     />
                   </div>
 
-                  <p>Haven't registered yet <a href="/register">Register</a></p>
-
+                  <p>
+                    Haven't registered yet <a href="/register">Register</a>
+                  </p>
+                  <p className="text-danger">{errorMessage}</p>
                   {/* Submit Button */}
                   <button type="submit" className="btn btn-primary w-100">
                     Login
