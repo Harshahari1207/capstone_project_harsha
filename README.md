@@ -185,4 +185,4 @@
 
 - **Backend**: Spring Boot (Microservices)
 - **Frontend**: React.js
-- **Database**: MySQL/PostgreSQL (or any SQL database)
+- **Database**: MySQL
