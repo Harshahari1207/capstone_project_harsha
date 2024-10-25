@@ -1,6 +1,7 @@
 package com.wipro.capstone.UserService.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,10 @@ public class UserService {
 	private UserRepository userRepository;
 
 	public User registerUser(User user) {
+		Optional<User> foundUser = userRepository.findByUsername(user.getUsername());
+		if (foundUser.isPresent()) {
+			throw new RuntimeException("Username already exists. Please choose a different username.");
+		}
 		return userRepository.save(user);
 	}
 
