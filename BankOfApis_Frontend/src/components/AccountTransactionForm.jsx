@@ -10,9 +10,20 @@ const AccountTransactionForm = ({
   handleAddAccountChange,
 }) => {
   const [activeForm, setActiveForm] = useState("account");
+  const [errorMessage, setErrorMessage] = useState("");
+  const handleTransactionButton = (e) => {
+    e.preventDefault();
+    if(accounts.length <2){
+      setErrorMessage("Must have at least two Bank accounts to make a transaction.");
+    }else{
+      setErrorMessage("");
+      setActiveForm("transaction")
+    }
+
+  }
   console.log(transaction);
   return (
-    <div className="container pt-5 bg-light rounded bg-body-secondary">
+    <div id="transparent" className="container pt-5 rounded">
       {/* Toggle buttons */}
       <div className="row p-3 justify-content-around mb-3">
         <button
@@ -27,16 +38,17 @@ const AccountTransactionForm = ({
           className={`btn ${
             activeForm === "transaction" ? "btn-primary" : "btn-outline-primary"
           } col-md-3`}
-          onClick={() => setActiveForm("transaction")}
+          onClick={handleTransactionButton}
         >
           Place Transaction
         </button>
       </div>
 
       {/* Form Box */}
-      <div className="row p-3 justify-content-around ">
+      <div className="row p-3 justify-content-around pb-3">
+        <p className="text-danger text-center">{errorMessage}</p>
         {activeForm === "account" && (
-          <div className="card col-md-5 shadow">
+          <div className="card col-md-5 shadow p-3 bg-light">
             {/* Add Bank Account Form */}
             <h4>Add Bank Account</h4>
             <form onSubmit={handleAddAccount} className="mb-4">

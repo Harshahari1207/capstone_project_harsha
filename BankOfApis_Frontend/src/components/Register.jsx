@@ -79,7 +79,7 @@ const Register = () => {
             </div>
           </div>
           <div className="col-md-6">
-            <div className="card">
+            <div className="card shadow bg-light">
               <div className="card-body">
                 <h3 className="card-title text-center mb-4">Register</h3>
                 <form onSubmit={handleSubmit}>

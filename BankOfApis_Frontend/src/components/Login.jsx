@@ -16,9 +16,22 @@ const Login = () => {
       [e.target.name]: e.target.value,
     });
   };
-
+  const containsSpecialCharacter = (password) => {
+    const specialChars = ["!", "@", "#", "$", "%", "^", "&", "*"];
+    return specialChars.some((char) => password.includes(char));
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (formData.password.length < 6) {
+      setErrorMessage(
+        "Password must be at least 6 characters long. Please try again."
+      );
+      return;
+    }
+    if (!containsSpecialCharacter(formData.password)) {
+      setErrorMessage("Password must contain at least one special character.");
+      return;
+    }
     console.log("Form Data Submitted:", formData);
     try {
       const response = await axios.post(
@@ -57,7 +70,7 @@ const Login = () => {
             </div>
           </div>
           <div className="col-md-6">
-            <div className="card">
+            <div className="card bg-light shadow">
               <div className="card-body">
                 <h3 className="card-title text-center mb-4">Login</h3>
                 <form onSubmit={handleSubmit}>

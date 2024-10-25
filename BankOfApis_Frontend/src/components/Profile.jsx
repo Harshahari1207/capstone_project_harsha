@@ -23,7 +23,7 @@ const ProfileBox = ({ user }) => {
             <p className="card-text">
               This is a simple description about the user.
             </p>
-            <p>Password: {user.password}</p>
+            <p>Password: ********</p>
             <p>Address: {user.address}</p>
           </div>
           <button className="btn btn-primary" onClick={handleCloseForm}>

@@ -65,18 +65,13 @@ const Dashboard = () => {
         "http://localhost:8082/accounts/register",
         data
       );
+      setAccounts([...accounts, accountForm]);
+      window.location.reload();
       console.log(response);
     } catch (error) {
       console.log(error);
     }
     // Add the new account to the state and reset the form
-    setAccounts([...accounts, accountForm]);
-    setAccountForm({
-      accountName: "",
-      accountType: "",
-      balance: "",
-      secretePassword: "",
-    });
   };
 
   // Handler for adding a transaction
@@ -105,7 +100,7 @@ const Dashboard = () => {
         transactionType: transaction.transactionType,
         userId: localStorage.getItem("userId"),
       };
-      console.log("data", data)
+      console.log("data", data);
       const response = await axios.post(
         "http://localhost:8082/transactions/transfer",
         data
@@ -284,12 +279,13 @@ const Dashboard = () => {
             <p>No accounts available. Add a new account to display here.</p>
           ) : (
             accounts.map((account, index) => (
-              <div key={index} className="col-md-4 mb-3">
-                <div className="card">
+              <div key={index} className="col-md-3 mb-3">
+                <div className="card bg-light shadow">
                   <div className="card-body">
                     <h5 className="card-title">{account.accountName}</h5>
                     <p className="card-text">Type: {account.accountType}</p>
-                    <p className="card-text">Balance: ${account.balance}</p>
+                    <p className="card-text">Account Id: {account.accountId}</p>
+                    <p className="card-text">Balance: ₹{account.balance}</p>
                   </div>
                 </div>
               </div>
@@ -303,17 +299,17 @@ const Dashboard = () => {
             <p>No Transaction available. Make Transaction to display here.</p>
           ) : (
             transactions.map((transaction, index) => (
-              <div key={index} className="col-md-4 mb-3">
-                <div className="card">
+              <div key={index} className="col-md-3 mb-3">
+                <div className="card bg-light shadow">
                   <div className="card-body">
                     <h5 className="card-title">
                       Transaction ID: {transaction.transactionId}
                     </h5>
                     <p className="card-text">
-                      From Account: {transaction.frmAccountId}
+                      From Account Id: {transaction.frmAccountId}
                     </p>
                     <p className="card-text">
-                      To Account: {transaction.toAccountId}
+                      To Account Id: {transaction.toAccountId}
                     </p>
                     <p className="card-text">
                       Transaction Type: {transaction.transactionType}
