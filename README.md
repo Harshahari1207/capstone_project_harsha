@@ -127,8 +127,7 @@
 ### 1. Home Page (Without Login)
 
 - Basic homepage with navigation options to login or register.
-
-![Screenshot 2024-10-25 085848](https://github.com/user-attachments/assets/d3add974-acb8-4cc6-a3b9-446a2b1fdf82)
+![Screenshot 2024-10-25 090612](https://github.com/user-attachments/assets/653fbe7c-d52e-4cb7-be38-2b2e04c84a63)
 
 
 ### 2. Register Page
