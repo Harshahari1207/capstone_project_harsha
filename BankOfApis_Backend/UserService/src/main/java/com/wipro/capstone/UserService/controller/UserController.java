@@ -1,5 +1,6 @@
 package com.wipro.capstone.UserService.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -42,7 +43,8 @@ public class UserController {
 		User foundUser = userService.findUserByUsername(user.getUsername());
 		System.out.println(foundUser.getPassword().equals(user.getPassword()));
 		if (foundUser != null && foundUser.getPassword().equals(user.getPassword())) {
-			String token = "abc"; // Placeholder for JWT or session token generation
+			LocalDateTime currentDate = LocalDateTime.now();
+			String token = "User_" + currentDate.toString();
 			Map<String, Object> response = Map.of("token", token, "user", foundUser);
 			return ResponseEntity.ok(response);
 
