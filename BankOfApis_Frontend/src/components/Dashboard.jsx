@@ -121,6 +121,7 @@ const Dashboard = () => {
 
   return (
     <div className="home pt-5">
+      <h1 className="text-center">Dashboard</h1>
       <div className="container ">
         {/* <div className="row p-3 justify-content-around">
           <div className="card col-md-5">

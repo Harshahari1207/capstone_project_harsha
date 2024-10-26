@@ -10,7 +10,8 @@ const ProfileBox = ({ user }) => {
   return (
     <>
       {isFormVisible && <EditProfileForm user={user} handleClose={handleCloseForm} />}
-      <div className="home d-flex justify-content-center align-items-center">
+      <div className="home d-flex flex-column align-items-center">
+        <h1 className="text-center m-5">Profile</h1>
         <div className="card text-center">
           <img
             src="https://static.vecteezy.com/system/resources/thumbnails/011/675/374/small_2x/man-avatar-image-for-profile-png.png"
